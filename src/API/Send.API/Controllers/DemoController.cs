@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Infra.Core.EventBus.Abstractions;
+using Infra.Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Send.API.IntegrationEvents.Events;
@@ -30,11 +31,11 @@ namespace Send.API.Controllers
             {
                 _eventBus.Publish(eventMessage);
 
-                _logger.LogInformation($"Published integration event: {eventMessage.Id} from Send.API");
+                _logger.Information($"Published integration event: {eventMessage.Id} from Send.API");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"ERROR Publishing integration event: {eventMessage.Id} from Send.API");
+                _logger.Error(ex, $"ERROR Publishing integration event: {eventMessage.Id} from Send.API");
 
                 throw;
             }

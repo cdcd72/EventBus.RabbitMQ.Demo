@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Receive.API.IntegrationEvents.Events;
 using Infra.Core.EventBus.Abstractions;
 using Microsoft.Extensions.Logging;
+using Infra.Core.Extensions;
 
 namespace Receive.API.IntegrationEvents.EventHandling
 {
@@ -17,7 +18,7 @@ namespace Receive.API.IntegrationEvents.EventHandling
 
         public async Task HandleAsync(TriggeredIntegrationEvent integrationEvent)
         {
-            _logger.LogInformation($"Event is triggered! event: {integrationEvent.Id} input: {integrationEvent.Input}");
+            _logger.Information($"Event is triggered! event: {integrationEvent.Id} input: {integrationEvent.Input}");
 
             await Task.CompletedTask;
         }
