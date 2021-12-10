@@ -2,6 +2,7 @@ using Infra.Core.EventBus;
 using Infra.Core.EventBus.Abstractions;
 using Infra.EventBus.RabbitMQ;
 using Infra.EventBus.RabbitMQ.Abstractions;
+using Infra.EventBus.RabbitMQ.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +33,9 @@ namespace Receive.API
             }));
 
             services.AddLogging(builder => builder.AddNLog("Nlog.config"));
+
+            services.Configure<ConnectionSettings>(settings => Configuration.GetSection(ConnectionSettings.SectionName).Bind(settings))
+                    .Configure<Settings>(settings => Configuration.GetSection(Settings.SectionName).Bind(settings));
 
             // Register event bus
             RegisterEventBus(services);
