@@ -44,13 +44,13 @@ namespace Receive.API
         private static void RegisterEventBus(IServiceCollection services)
         {
             // Add RabbitMQ connection
-            services.AddSingleton<IRabbitMQConnection, DefaultRabbitMQConnection>();
+            services.AddSingleton<IRabbitMqConnection, DefaultRabbitMqConnection>();
 
             // Add event bus subscriptions manager
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 
             // Add event bus
-            services.AddSingleton<IEventBus, RabbitMQBus>();
+            services.AddSingleton<IEventBus, RabbitMqBus>();
 
             // Add event handlers
             services.AddTransient<TriggeredIntegrationEventHandler>();
