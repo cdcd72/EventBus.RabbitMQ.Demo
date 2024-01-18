@@ -6,41 +6,31 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Send.API.IntegrationEvents.Events;
 
-namespace Send.API.Controllers
+namespace Send.API.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class DemoController(ILogger<DemoController> logger, IEventBus eventBus) : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class DemoController : ControllerBase
+    [Route(nameof(TriggerAsync))]
+    [HttpPost]
+    public async Task<ActionResult> TriggerAsync(string input)
     {
-        private readonly ILogger<DemoController> _logger;
-        private readonly IEventBus _eventBus;
+        var eventMessage = new TriggeredIntegrationEvent(input);
 
-        public DemoController(ILogger<DemoController> logger, IEventBus eventBus)
+        try
         {
-            _logger = logger;
-            _eventBus = eventBus;
+            eventBus.Publish(eventMessage);
+
+            logger.Information($"Published integration event: {eventMessage.Id} from Send.API");
+        }
+        catch (Exception ex)
+        {
+            logger.Error(ex, $"ERROR Publishing integration event: {eventMessage.Id} from Send.API");
+
+            throw;
         }
 
-        [Route(nameof(TriggerAsync))]
-        [HttpPost]
-        public async Task<ActionResult> TriggerAsync(string input)
-        {
-            var eventMessage = new TriggeredIntegrationEvent(input);
-
-            try
-            {
-                _eventBus.Publish(eventMessage);
-
-                _logger.Information($"Published integration event: {eventMessage.Id} from Send.API");
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, $"ERROR Publishing integration event: {eventMessage.Id} from Send.API");
-
-                throw;
-            }
-
-            return Ok();
-        }
+        return Ok();
     }
 }

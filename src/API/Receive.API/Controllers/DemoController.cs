@@ -1,14 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Receive.API.Controllers
-{
-    [ApiController]
-    [Route("[controller]")]
-    public class DemoController : ControllerBase
-    {
-        private readonly ILogger<DemoController> _logger;
+namespace Receive.API.Controllers;
 
-        public DemoController(ILogger<DemoController> logger) => _logger = logger;
-    }
+[ApiController]
+[Route("[controller]")]
+public class DemoController(ILogger<DemoController> logger) : ControllerBase
+{
+    private readonly ILogger<DemoController> _logger = logger;
 }
